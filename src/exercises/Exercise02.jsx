@@ -10,13 +10,25 @@ import React from 'react';
 // ];
 
 // Counter Component
-const Counter = ({ value, onIncrement, onDecrement }) => {
+// const Counter = ({ value, onIncrement, onDecrement }) => {
+//   return (
+//     <div className="d-flex my-2">
+//       <strong>{value}</strong>
+//       <div className="ml-2">
+//         <button onClick = {onDecrement} className="btn btn-danger mr-1">-</button>
+//         <button onClick = {onIncrement} className="btn btn-success">+</button>
+//       </div>
+//     </div>
+//   );
+// };
+
+const Counter = ({ value, onChange }) => {
   return (
     <div className="d-flex my-2">
       <strong>{value}</strong>
       <div className="ml-2">
-        <button onClick = {onDecrement} className="btn btn-danger mr-1">-</button>
-        <button onClick = {onIncrement} className="btn btn-success">+</button>
+        <button onClick = {onChange} value = 'minus' className="btn btn-danger mr-1">-</button>
+        <button onClick = {onChange} value = 'plus' className="btn btn-success">+</button>
       </div>
     </div>
   );
@@ -33,6 +45,7 @@ const TotalValues = ({sumValues}) => {
   )
 }
 
+
 const GroupOfCounters = () => {
 
   const [data, setData] = React.useState([
@@ -42,28 +55,63 @@ const GroupOfCounters = () => {
     { id: 4, value: 0 },
   ]);
 
-  function onDecrement (n, i) {
-    let dataCopy = [...data]
-    dataCopy[i].value -= n;
-    setData(dataCopy);
-  
-  }
-
-  function onIncrement (n, i) {
+  function incrOrDecr (n, i, e) {
+    if (e.target.value === 'plus'){ 
     let dataCopy = [...data]
     dataCopy[i].value += n;
     setData(dataCopy);
   }
+  if (e.target.value === 'minus') {
+    let dataCopy = [...data]
+    dataCopy[i].value -= n;
+    setData(dataCopy);
+  }
+  }
+
+
   
   return (
     <div>
       {data.map((counter, i) => (
-        <Counter key={counter.id} value={counter.value} onIncrement = {() => onIncrement(2, i)} onDecrement = {() => onDecrement(2, i)}/>
+        <Counter key={counter.id} value={counter.value} onChange = {(e) => incrOrDecr(7, i, e)} />
       ))}
-      <TotalValues sumValues = {data.reduce( function(acc,e){ return acc + e.value; }, 0)}/>
+      <TotalValues sumValues = {data.reduce(function(acc,e){ return acc + e.value; }, 0)}/>
     </div>
   );
 };
+
+
+// const GroupOfCounters = () => {
+
+//   const [data, setData] = React.useState([
+//     { id: 1, value: 0 },
+//     { id: 2, value: 0 },
+//     { id: 3, value: 0 },
+//     { id: 4, value: 0 },
+//   ]);
+
+//   function onDecrement (n, i) {
+//     let dataCopy = [...data]
+//     dataCopy[i].value -= n;
+//     setData(dataCopy);
+  
+//   }
+
+//   function onIncrement (n, i) {
+//     let dataCopy = [...data]
+//     dataCopy[i].value += n;
+//     setData(dataCopy);
+//   }
+  
+//   return (
+//     <div>
+//       {data.map((counter, i) => (
+//         <Counter key={counter.id} value={counter.value} onIncrement = {() => onIncrement(2, i)} onDecrement = {() => onDecrement(2, i)}/>
+//       ))}
+//       <TotalValues sumValues = {data.reduce( function(acc,e){ return acc + e.value; }, 0)}/>
+//     </div>
+//   );
+// };
 
 /* THE FIX ENDS HERE */
 
