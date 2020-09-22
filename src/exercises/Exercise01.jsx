@@ -6,24 +6,26 @@ const Exercise01 = () => {
   const [users, setUsers] = React.useState([])
 
   /* THE FIX STARTS HERE */
+  
 
   React.useEffect(() => {
+    let numberOfPosts = [];
     for(var i = 1; i < TOTAL_USERS; i++) {
-      // We fetch the user
-      fetch('https://jsonplaceholder.typicode.com/users?id=' + i)
-        .then(r => r.json()) // converts response to obj
-        .then(user => user[0]) // maps [{..}] to {..} since the API provides an array
-        .then(user => {
-          setUsers([
-            ...users,
-            user
-          ])
-        })
+      numberOfPosts.push(i);
     }
+    let promises = numberOfPosts.map((i) => fetch('https://jsonplaceholder.typicode.com/users?id=' + i)
+    .then(r => r.json())
+    .then(user => user[0])
+    )
+    Promise.all(promises)
+    .then(values => {
+      console.log(values)
+      setUsers(values)
+    })
   }, [])
 
   /* THE FIX ENDS HERE */
-
+console.log(users);
   return (
     <div className="container">
       <h2>Instructions</h2>
@@ -43,7 +45,7 @@ const Exercise01 = () => {
       <h3>Users</h3>
 
       <ul className="list-group">
-        {users.map(user => <li key={`user-${user.id}`} className="list-group-item">
+        {users && users.map (user => <li key={`user-${user.id}`} className="list-group-item">
           <strong>ID:</strong> {user.id} - <strong>Name:</strong> {user.name} <strong>Email:</strong> {user.email}
         </li>)}
       </ul>

@@ -3,36 +3,71 @@ import React from 'react';
 /* THE FIX STARTS HERE */
 
 // state data for 3 counters
-const data = [
-  { id: 1, value: 0 },
-  { id: 2, value: 0 },
-  { id: 3, value: 0 },
-];
+// const data = [
+//   { id: 1, value: 0 },
+//   { id: 2, value: 0 },
+//   { id: 3, value: 0 },
+// ];
 
 // Counter Component
-const Counter = ({ value }) => {
+const Counter = ({ value, onIncrement, onDecrement }) => {
   return (
     <div className="d-flex my-2">
       <strong>{value}</strong>
       <div className="ml-2">
-        <button className="btn btn-danger mr-1">-</button>
-        <button className="btn btn-success">+</button>
+        <button onClick = {onDecrement} className="btn btn-danger mr-1">-</button>
+        <button onClick = {onIncrement} className="btn btn-success">+</button>
       </div>
     </div>
   );
 };
 
-const GroupOfCounters = () => {
+
+
+
+const TotalValues = ({sumValues}) => {
   return (
     <div>
-      {data.map((counter) => (
-        <Counter key={counter.id} value={counter.value} />
+      <h5> TOTAL : {sumValues} </h5>
+    </div>
+  )
+}
+
+const GroupOfCounters = () => {
+
+  const [data, setData] = React.useState([
+    { id: 1, value: 0 },
+    { id: 2, value: 0 },
+    { id: 3, value: 0 },
+    { id: 4, value: 0 },
+  ]);
+
+  function onDecrement (n, i) {
+    let dataCopy = [...data]
+    dataCopy[i].value -= n;
+    setData(dataCopy);
+  
+  }
+
+  function onIncrement (n, i) {
+    let dataCopy = [...data]
+    dataCopy[i].value += n;
+    setData(dataCopy);
+  }
+  
+  return (
+    <div>
+      {data.map((counter, i) => (
+        <Counter key={counter.id} value={counter.value} onIncrement = {() => onIncrement(2, i)} onDecrement = {() => onDecrement(2, i)}/>
       ))}
+      <TotalValues sumValues = {data.reduce( function(acc,e){ return acc + e.value; }, 0)}/>
     </div>
   );
 };
 
 /* THE FIX ENDS HERE */
+
+
 
 const Exercise02 = () => {
   return (
@@ -97,6 +132,7 @@ const Exercise02 = () => {
       <hr className="my-5" />
 
       <GroupOfCounters />
+      
     </div>
   );
 };

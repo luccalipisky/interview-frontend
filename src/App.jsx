@@ -14,22 +14,38 @@ const Welcome = () => {
   </div>
 }
 
+
+const NavLink = props => (
+  <Link
+    {...props}
+    getProps={({ isCurrent }) => {
+      // the object returned here is passed to the
+      // anchor element's props
+      return {
+        
+          className: isCurrent ? "nav-link active" : "nav-link"
+        
+      };
+    }}
+  />
+);
+
 const App = () => {
   return <div className="container">
+    <NavLink to="/" >
     <h1 class="py-4">FrontEnd Interview Exercises</h1>
+    </NavLink>
 
     <ul className="nav nav-tabs">
+      
       <li className="nav-item">
-        <Link to="/" className="nav-link active">Homepage</Link>
+        <NavLink to="/exercise01" >Exercise 01</NavLink>
       </li>
       <li className="nav-item">
-        <Link to="/exercise01" className="nav-link">Exercise 01</Link>
+        <NavLink to="/exercise02" >Exercise 02</NavLink>
       </li>
       <li className="nav-item">
-        <Link to="/exercise02" className="nav-link">Exercise 02</Link>
-      </li>
-      <li className="nav-item">
-        <Link to="/exercise03" className="nav-link">Exercise 03</Link>
+        <NavLink to="/exercise03" >Exercise 03</NavLink>
       </li>
     </ul>
 
